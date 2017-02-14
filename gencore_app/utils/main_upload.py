@@ -11,18 +11,22 @@ from conda_env import exceptions
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def upload_remote_env(fname, verbose=False):
 
-    #TODO Update this to use conda env upload utils
+    # TODO Update this to use conda env upload utils
     logging.info("Uploading remote env of {}".format(fname))
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, conda_safe, summary='', env_data=dict(env.to_dict()))
-    # uploader.version = env.version
+    uploader = Uploader(env.name, conda_safe, summary='',
+                        env_data=dict(env.to_dict()))
+
     info = uploader.upload(labels)
-    url = info.get('url', 'anaconda.org')
-    logging.info("Your environment file has been uploaded to {}".format(url))
+    logging.info(info)
+    url = info.get('url')
+    logging.info('Your environment file has been uploaded to {}'.format(url))
+
 
 def status_check_upload(upload_env_passes):
 
@@ -31,6 +35,7 @@ def status_check_upload(upload_env_passes):
         sys.exit(1)
     else:
         logging.info("Upload passed!")
+
 
 def gen_labels(env):
     labels = ['main']
@@ -50,7 +55,9 @@ def gen_labels(env):
 
     return labels
 
+
 class Uploader(Uploader):
+
     def __init__(self, packagename, env_file, **kwargs):
         super(self.__class__, self).__init__(packagename, env_file, **kwargs)
         self.env_data = kwargs.get('env_data')
@@ -70,15 +77,26 @@ class Uploader(Uploader):
 
         print('env data')
         print(self.env_data)
-        # uploader = Uploader(name, args.file, summary=summary, env_data=dict(env.to_dict()))
         print("Uploading environment %s to anaconda-server (%s)... " %
               (self.packagename, self.binstar.domain))
         if self.is_ready():
-            with open(self.file, mode='rb') as envfile:
-                return self.binstar.upload(self.username, self.packagename,
-                                           self.version, self.basename, envfile,
-                                           channels=labels,
-                                           distribution_type='env', attrs=self.env_data)
+            try:
+                with open(self.file, mode='rb') as envfile:
+                    binstarUpload = self.binstar.upload(
+                        self.username, self.packagename,
+                        self.version, self.basename,
+                        envfile, channels=labels,
+                        distribution_type='env',
+                        attrs=self.env_data
+                    )
+                    print('we have an upload!')
+                    print(binstarUpload)
+                    return binstarUpload
+            except Exception as e:
+                logging.error(traceback.format_exc())
+                raise
         else:
-            #If we are in the master branch we should get the conflicting version,
+            logging.info('there was a problem uploading env!')
             raise exceptions.AlreadyExist()
+
+        logging.info('Uploaded env %s' % (self.packagename))
