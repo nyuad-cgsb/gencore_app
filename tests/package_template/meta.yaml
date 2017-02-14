@@ -1,0 +1,15 @@
+about:
+  home:
+  license: 'GPL'
+  summary: ''
+
+build:
+  number: 0
+
+package:
+  name: name
+  version: 'version'
+
+source:
+  fn: .tar.gz
+  url:
