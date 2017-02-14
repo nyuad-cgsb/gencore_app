@@ -9,6 +9,7 @@ from gencore_app.utils.main_env import Environment, from_file
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 @click.command('build_docs', short_help='Build docs')
 @global_test_options
 def cli(verbose, environments):
@@ -31,6 +32,7 @@ def cli(verbose, environments):
     docs = MeMyDocs()
     docs.write_docs(environments)
 
+
 def flatten_deps(deps):
     flat_deps = []
 
@@ -46,25 +48,28 @@ def flatten_deps(deps):
 
     return flat_deps
 
+
 def parse_deps(dep):
 
     dep_split = dep.rsplit('_', 1)
 
     if len(dep_split) == 2:
-        #There is a version
+        # There is a version
         package_name = dep_split[0]
         package_version = dep_split[1]
     else:
-        #There is no version
+        # There is no version
         package_name = dep_split[0]
         package_version = 'latest'
 
     return package_name, package_version
 
+
 class TrackSoftware():
 
     def __init__(self):
         self.deps = {}
+
 
 class DepPackage():
 
@@ -79,6 +84,7 @@ class DepPackage():
         self.envs.append(env)
         self.envs.sort()
 
+
 class MeMyDocs():
 
     def __init__(self):
@@ -90,12 +96,11 @@ class MeMyDocs():
         self.all_envs.append(self.environment)
         self.all_envs.sort()
 
-
     def search_deps(self, dep, version, channels):
 
         key = "{}={}".format(dep, version)
 
-        if  key not in self.track_software.deps.keys():
+        if key not in self.track_software.deps.keys():
             aserver_api = get_server_api()
 
             package = None
@@ -103,23 +108,26 @@ class MeMyDocs():
             for channel in channels:
                 try:
                     package = aserver_api.package(channel, dep)
-                    logger.info("Package {} exists in channel {}.".format(dep, channel))
+                    logger.info(
+                        "Package {} exists in channel {}.".format(dep, channel))
                 except:
-                    logger.info("Package {} does not exist in channel {}.".format(dep, channel))
+                    logger.info(
+                        "Package {} does not exist in channel {}.".format(dep, channel))
 
                 if package:
-                    dep_obj = DepPackage(dep, version, package['summary'], channel )
+                    dep_obj = DepPackage(dep, version, package[
+                                         'summary'], channel)
                     self.track_software.deps[key] = dep_obj
                     dep_obj.add_envs(self.environment)
                     return dep_obj
 
-            #must come from default or channels not defined in environment.yml
-            dep_obj = DepPackage(dep, version, '', 'default' )
+            # must come from default or channels not defined in environment.yml
+            dep_obj = DepPackage(dep, version, '', 'default')
             dep_obj.add_envs(self.environment)
             self.track_software.deps[key] = dep_obj
             return dep_obj
         else:
-            dep_obj  = self.track_software.deps[key]
+            dep_obj = self.track_software.deps[key]
 
             if self.environment not in dep_obj.envs:
                 dep_obj.add_envs(self.environment)
@@ -132,9 +140,10 @@ class MeMyDocs():
             # return
 
         package = from_file(fname)
+        # name = package.name
+        # version = package.version
+        name, version = parse_deps(dep)
 
-        name = package.name
-        version = package.version
         self.environment = name
         self.add_envs()
 
@@ -161,7 +170,8 @@ class MeMyDocs():
         for dep in deps:
             package_name, package_version = parse_deps(dep)
 
-            package_obj = self.search_deps(package_name, package_version, channels)
+            package_obj = self.search_deps(
+                package_name, package_version, channels)
 
             f.write("### {}\n".format(package_name))
 
@@ -192,7 +202,7 @@ class MeMyDocs():
             f.write("**Conda Channel:** {}\n\n".format(dep_obj.channel))
             f.write("### HPC Modules\n\n")
 
-            #TODO Format these as urls
+            # TODO Format these as urls
             for tenv in dep_obj.envs:
                 f.write("* {}\n".format(tenv))
 
@@ -211,7 +221,8 @@ class MeMyDocs():
         f.write("* [HPC Modules](environment/environments.md)\n")
 
         for tenv in self.all_envs:
-            f.write("\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv))
+            f.write(
+                "\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv))
 
     def write_table_markdown(self):
 
