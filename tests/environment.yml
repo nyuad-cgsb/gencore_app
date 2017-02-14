@@ -1,0 +1,12 @@
+name: env-1
+channels:
+- bioconda
+- r
+- defaults
+- condaforge
+- nyuad-cgsb
+dependencies:
+- perl
+- env-1_docs=None
+extra_args:
+  rebuild: 1

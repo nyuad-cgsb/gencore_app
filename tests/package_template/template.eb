@@ -1,0 +1,31 @@
+##
+# This is an easyconfig file for EasyBuild, see https://github.com/hpcugent/easybuild
+#
+#  This easyconfig uses configs not yet available in the main easybuild-easyblocks repo. Clone
+#  https://github.com/jerowe/easybuild-easyblocks
+#  and install into your EasyBuild env with python setup.py build && python setup.py install
+##
+
+easyblock = 'EB_CondaEnv'
+
+name = "{{ name }}"
+version = "1.0"
+variant = "Linux-x86_64"
+
+homepage = "http://cbi.abudhabi.nyu.edu/w/"
+description = """ {{ name }} """
+
+toolchain = {'name': 'dummy', 'version': 'dummy'}
+
+builddependencies = [('gencore_anaconda', '2-4.0.0')]
+
+#sources = ["environment.yml"]
+#environment_file = sources[0]
+remote_environment="jerowe/{{ name }}_{{ version }}"
+
+sanity_check_paths = {
+    'files': ["bin/conda"],
+    'dirs': []
+}
+
+moduleclass = 'tools'

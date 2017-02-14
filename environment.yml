@@ -1,0 +1,10 @@
+
+name: env-1
+rebuild: 1
+dependencies:
+  - perl
+channels:
+  - bioconda
+  - r 
+  - defaults
+  - condaforge 
