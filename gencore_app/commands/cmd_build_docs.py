@@ -142,7 +142,7 @@ class MeMyDocs():
         package = from_file(fname)
         # name = package.name
         # version = package.version
-        name, version = parse_deps(dep)
+        name, version = parse_deps(package.name)
 
         self.environment = name
         self.add_envs()

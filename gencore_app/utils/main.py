@@ -64,7 +64,6 @@ def get_name(fname):
     This corresponds to module gencore_metagenomics/1.0
     This method will go away when there are versions!
 
-    We have versions!
     """
 
     package = from_file(fname)
