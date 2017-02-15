@@ -7,34 +7,37 @@ from conda_env.utils.uploader import Uploader
 from gencore_app.utils.main_env import from_file
 from gencore_app.commands.cmd_build_docs import flatten_deps, parse_deps
 from conda_env import exceptions
+try:
+    from binstar_client.utils import get_server_api
+    from binstar_client import errors
+except ImportError:
+    get_binstar = None
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def upload_remote_env(fname, verbose=False):
 
     # TODO Update this to use conda env upload utils
-    logging.info("Uploading remote env of {}".format(fname))
+    logging.debug("Uploading remote env of {}".format(fname))
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, conda_safe, summary='',
-                        env_data=dict(env.to_dict()))
+    uploader = Uploader(env.name, fname, summary='', env_data=dict(env.to_dict()))
 
-    info = uploader.upload(labels)
-    logging.info(info)
-    url = info.get('url')
-    logging.info('Your environment file has been uploaded to {}'.format(url))
+    url = uploader.upload(labels)
+    logging.debug('Completed uploader.upload')
+    logging.debug(url)
 
 
 def status_check_upload(upload_env_passes):
 
     if not upload_env_passes:
-        logging.info("One or more uploads failed!")
+        logging.debug('One or more uploads failed!')
         sys.exit(1)
     else:
-        logging.info("Upload passed!")
+        logging.debug('Upload passed!')
 
 
 def gen_labels(env):
@@ -69,6 +72,12 @@ class Uploader(Uploader):
         else:
             return time.strftime('%Y.%m.%d.%H%M')
 
+    @property
+    def binstar(self):
+        if self._binstar is None:
+            self._binstar = get_server_api()
+        return self._binstar
+
     def upload(self, labels):
         """
         Prepares and uploads env file
@@ -85,18 +94,17 @@ class Uploader(Uploader):
                     binstarUpload = self.binstar.upload(
                         self.username, self.packagename,
                         self.version, self.basename,
-                        envfile, channels=labels,
+                        envfile,
                         distribution_type='env',
                         attrs=self.env_data
                     )
-                    print('we have an upload!')
-                    print(binstarUpload)
                     return binstarUpload
+            except SystemExit as e:
+                print(e)
+                raise
             except Exception as e:
-                logging.error(traceback.format_exc())
+                logging.error('We got an uncaught exception uploading to binstar')
                 raise
         else:
-            logging.info('there was a problem uploading env!')
+            logging.debug('there was a problem uploading env!')
             raise exceptions.AlreadyExist()
-
-        logging.info('Uploaded env %s' % (self.packagename))
