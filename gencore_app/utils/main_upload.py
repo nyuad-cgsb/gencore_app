@@ -26,7 +26,12 @@ def upload_remote_env(fname, verbose=False):
     labels = gen_labels(env)
     uploader = Uploader(env.name, fname, summary='', env_data=dict(env.to_dict()))
 
-    url = uploader.upload(labels)
+    try:
+        url = uploader.upload(labels)
+    except Exception as e:
+        logging.debug('Getting exceptions and not sure why')
+        logging.debug(e)
+
     logging.debug('Completed uploader.upload')
     logging.debug(url)
 
