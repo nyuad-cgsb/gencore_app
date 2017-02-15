@@ -99,7 +99,7 @@ class Uploader(Uploader):
                     binstarUpload = self.binstar.upload(
                         self.username, self.packagename,
                         self.version, self.basename,
-                        envfile,
+                        envfile, channels=labels,
                         distribution_type='env',
                         attrs=self.env_data
                     )
