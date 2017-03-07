@@ -52,6 +52,12 @@ def run_command(cmd, verbose=True):
 
 def find_files(environments):
 
+    # By default we will check to see if there
+    # any recipes committed
+    recipes = os.environ.get('RECIPES')
+    if recipes:
+        return recipes.splitlines(False)
+
     if environments:
         return  environments
     else:
