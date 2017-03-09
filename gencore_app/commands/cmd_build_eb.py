@@ -32,7 +32,7 @@ def cli(verbose, environments):
 
         # if rebuild(filename):
         logger.info("We are creating eb for {}".format(filename))
-        env = from_files(filename)
+        env = from_file(filename)
         name = env.name
         version = env.version
         print_html_doc(name, version)
