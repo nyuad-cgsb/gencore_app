@@ -5,10 +5,12 @@ import logging
 
 from gencore_app.cli import global_test_options
 from gencore_app.utils.main import find_files,  get_name, rebuild
+from gencore_app.utils.main_env import from_file
 
 # logging.basicConfig(level=logger.info)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 
 @click.command('build_eb', short_help='Build Easyblock Configs')
 @global_test_options
@@ -30,8 +32,11 @@ def cli(verbose, environments):
 
         # if rebuild(filename):
         logger.info("We are creating eb for {}".format(filename))
-        name, version = get_name(filename)
+        env = from_files(filename)
+        name = env.name
+        version = env.version
         print_html_doc(name, version)
+
 
 def print_html_doc(name, version):
     # Create the jinja2 environment.
