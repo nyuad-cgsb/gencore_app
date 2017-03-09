@@ -11,6 +11,7 @@ import shutil
 from binstar_client.utils import get_server_api
 import logging
 
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
