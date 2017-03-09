@@ -5,7 +5,7 @@ from gencore_app.utils.main import run_command
 from conda_env.env import Environment
 from conda_env.utils.uploader import Uploader
 from gencore_app.utils.main_env import from_file
-from gencore_app.commands.cmd_build_docs import flatten_deps, parse_deps, parse_dict_deps
+from gencore_app.commands.cmd_build_docs import flatten_deps, parse_dict_deps
 from conda_env import exceptions
 try:
     from binstar_client.utils import get_server_api
