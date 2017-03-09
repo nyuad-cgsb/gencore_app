@@ -74,13 +74,14 @@ def get_name(fname):
 
     package = from_file(fname)
     name  = package.name
-#    version = package.version
+    version = package.version
 
-    l = name.split("_")
-    version = l.pop()
-    name = "_".join(l)
+    # l = name.split("_")
+    # version = l.pop()
+    # name = "_".join(l)
 
     return name, version
+
 
 def remote_env_exists(env):
 
@@ -98,18 +99,19 @@ def remote_env_exists(env):
 def rebuild(filename):
     """
     Return a boolean based on whether or not we are building the environment
-    1. If the environment does not exist - we always build iti
+    1. If the environment does not exist - we always build it
     2. If the remote environment exists
         a. rebuild: True specified in yaml - rebuild
         b. rebuld not specified in yaml - don't rebuild
     """
-    #TODO add in md5 sum check instead of if env exists
+    # TODO add in md5 sum check instead of if env exists
 
     env = from_file(filename)
 
     if not remote_env_exists(env):
         return True
-    elif 'rebuild' in env.extra_args and env.extra_args['rebuild']:
-        return True
+    # this is deprecated - now we increase the build string
+    # elif 'rebuild' in env.extra_args and env.extra_args['rebuild']:
+    #     return True
     else:
         return False

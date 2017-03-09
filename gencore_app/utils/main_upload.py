@@ -31,6 +31,7 @@ def upload_remote_env(fname, verbose=False):
     except Exception as e:
         logging.debug('Getting exceptions and not sure why')
         logging.debug(e)
+        raise
 
     logging.debug('Completed uploader.upload')
     logging.debug(url)
@@ -52,7 +53,7 @@ def gen_labels(env):
     flat_deps = flatten_deps(deps)
 
     for dep in flat_deps:
-        p = parse_deps(dep)
+        p = parse_dict_deps(dep)
         t = p[0] + '=' + p[1]
         labels.append(p[0])
         labels.append(t)
@@ -108,8 +109,8 @@ class Uploader(Uploader):
                 print(e)
                 raise
             except Exception as e:
-                logging.error('We got an uncaught exception uploading to binstar')
+                logging.debug('We got an uncaught exception uploading to binstar')
                 raise
         else:
-            logging.debug('there was a problem uploading env!')
+            logging.debug('This env already exists. Please remove the env or increase the build')
             raise exceptions.AlreadyExist()

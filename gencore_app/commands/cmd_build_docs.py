@@ -4,6 +4,7 @@ from binstar_client.utils import get_server_api
 from gencore_app.utils.main import rebuild, find_files
 import logging
 from gencore_app.utils.main_env import Environment, from_file
+import os
 
 # logging.basicConfig(level=logger.info)
 logger = logging.getLogger(__name__)
@@ -49,9 +50,18 @@ def flatten_deps(deps):
     return flat_deps
 
 
+def parse_dict_deps(dep):
+    dep_split = dep.split('=')
+    return name_version(dep_split)
+
+
 def parse_deps(dep):
 
     dep_split = dep.rsplit('_', 1)
+    return name_version(dep_split)
+
+
+def name_version(dep_split):
 
     if len(dep_split) == 2:
         # There is a version
@@ -136,15 +146,11 @@ class MeMyDocs():
 
     def write_env_markdown(self, fname):
 
-        # if not rebuild(fname):
-            # return
-
         package = from_file(fname)
-        # name = package.name
-        # version = package.version
-        name, version = parse_deps(package.name)
+        name = package.name
+        version = package.version
 
-        self.environment = name
+        self.environment = name + '-' + version
         self.add_envs()
 
         p_dict = package.to_dict()
@@ -156,8 +162,8 @@ class MeMyDocs():
 
         channels = p_dict['channels']
 
-        # f = open('/nyuad-conda-configs/_docs/environment/{}.md'.format(name), 'w')
-        f = open('_docs/environment/{}_{}.md'.format(name, version), 'w')
+        os.makedirs('_docs/environment', exist_ok=True)
+        f = open('_docs/environment/{}-{}.md'.format(name, version), 'w')
 
         f.write("# {}\n".format(name))
 
@@ -168,7 +174,7 @@ class MeMyDocs():
         f.write("## Software Packages\n\n")
 
         for dep in deps:
-            package_name, package_version = parse_deps(dep)
+            package_name, package_version = parse_dict_deps(dep)
 
             package_obj = self.search_deps(
                 package_name, package_version, channels)
@@ -185,6 +191,7 @@ class MeMyDocs():
 
     def write_software_markdown(self):
 
+        os.makedirs('_docs/software', exist_ok=True)
         f = open('_docs/software/software.md', 'w')
         f.write("# Software\n\n")
 
@@ -222,7 +229,7 @@ class MeMyDocs():
 
         for tenv in self.all_envs:
             f.write(
-                "\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv))
+                "\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv, tenv))
 
     def write_table_markdown(self):
 

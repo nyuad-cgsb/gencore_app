@@ -26,7 +26,7 @@ def cli(verbose, environments):
     for filename in files:
 
         # TODO - Have better specifications for deciding which envs to build
-        if rebuild(filename) or os.environ.get('RECIPES'):
+        if rebuild(filename):
             logger.info('Building {}'.format(filename))
             build_passes = try_conda_env_create(filename)
             status_check_build(build_passes)
