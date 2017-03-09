@@ -37,7 +37,7 @@ class Environment(Environment):
     @property
     def version(self):
         if self.build is not None:
-            return self._version + '-' + str(self.build)
+            return str(self._version) + '-' + str(self.build)
         elif self._version:
             return self._version
         else:
