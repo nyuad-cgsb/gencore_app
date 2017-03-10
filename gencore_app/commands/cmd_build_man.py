@@ -120,10 +120,10 @@ def update_env(docs):
     if 'nyuad-cgsb' not in env.channels:
         env.channels.append('nyuad-cgsb')
 
-    env.save()
+    # env.save()
     # env.save_extra_args()
 
-    logger.info('Successfully saved env')
+    # logger.info('Successfully saved env')
 
 
 def remote_docs_exist(docs):
