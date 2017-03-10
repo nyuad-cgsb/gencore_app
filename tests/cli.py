@@ -2,7 +2,7 @@ import os
 import unittest
 import subprocess
 
-# Don't rebuild the env
+
 environment_1 = '''
 name: env_1
 version: 1
@@ -61,7 +61,7 @@ class IntegrationTest(unittest.TestCase):
 
     def test_things(self):
         create_env(environment_1)
-        o, e, s = run('gencore_app build_envs')
+        o, e, s = run('gencore_app build_envs -e environment.yml')
         self.assertStatusOk(s)
     #    o, e, s = run('gencore_app build_docs')
     #    self.assertStatusOk(s)

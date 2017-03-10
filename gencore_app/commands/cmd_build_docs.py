@@ -119,12 +119,15 @@ class MeMyDocs():
                 try:
                     package = aserver_api.package(channel, dep)
                     # logger.info(
-                    #     "Package {} exists in channel {}.".format(dep, channel))
+                    #     "Package {} exists in channel {}."
+                    # .format(dep, channel))
                 except:
-                    logger.info(
-                        "Package {} does not exist in channel {}.".format(dep, channel))
+                    package = None
+                    # logger.info(
+                    #     "Package {} does not exist in channel {}."
+                    # .format(dep, channel))
 
-                if package:
+                if package is not None:
                     dep_obj = DepPackage(dep, version, package[
                                          'summary'], channel)
                     self.track_software.deps[key] = dep_obj
