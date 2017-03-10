@@ -118,11 +118,11 @@ class MeMyDocs():
             for channel in channels:
                 try:
                     package = aserver_api.package(channel, dep)
-                    logger.info(
-                        "Package {} exists in channel {}.".format(dep, channel))
+                    # logger.info(
+                    #     "Package {} exists in channel {}.".format(dep, channel))
                 except:
-                    logger.info(
-                        "Package {} does not exist in channel {}.".format(dep, channel))
+                    # logger.info(
+                    #     "Package {} does not exist in channel {}.".format(dep, channel))
 
                 if package:
                     dep_obj = DepPackage(dep, version, package[
