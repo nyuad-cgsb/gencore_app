@@ -121,8 +121,8 @@ class MeMyDocs():
                     # logger.info(
                     #     "Package {} exists in channel {}.".format(dep, channel))
                 except:
-                    # logger.info(
-                    #     "Package {} does not exist in channel {}.".format(dep, channel))
+                    logger.info(
+                        "Package {} does not exist in channel {}.".format(dep, channel))
 
                 if package:
                     dep_obj = DepPackage(dep, version, package[
