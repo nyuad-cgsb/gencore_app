@@ -17,15 +17,18 @@ def cli(verbose, environments):
     """ Build markdown docs for GitBooks
         1. Check if remote env exists or force_rebuild enabled
             a. If env exists skip building docs for this packge
-            b. If env exists, but force_rebuild enabled, rebuild the docs anyways
+            b. If env exists, but force_rebuild enabled,
+                rebuild the docs anyways
         2. Build the software docs
             a. Parse the conda configuration file, getting each dependency
-            b. For each dependency search some information from conda: namely version and summary
+            b. For each dependency search some information from conda:
+                namely version and summary
             c. Add these to the markdown doc
         3. Build the summary doc
             a. The summary doc is a 'Table of Contents' for the GitBooks site
         4. Write the table doc
-            a. This is a big matrix, which will probably be split into many matrices, describing which software is in which module
+            a. This is a big matrix, which will probably be split into
+                many matrices, describing which software is in which module
     """
 
     click.echo("We are building the docs for GitHub Pages")
