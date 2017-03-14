@@ -12,6 +12,7 @@ aserver_api = get_server_api()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def run_command(cmd, verbose=True):
 
     logger.info("Running cmd {}".format(cmd))
@@ -19,7 +20,7 @@ def run_command(cmd, verbose=True):
 
     try:
         p = sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.STDOUT,
-                             stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
+                     stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
     except OSError as err:
         print("OS Error: {0}".format(err))
 
@@ -50,6 +51,7 @@ def run_command(cmd, verbose=True):
     else:
         return False
 
+
 def find_files(environments):
 
     # By default we will check to see if there
@@ -59,9 +61,10 @@ def find_files(environments):
         return recipes.splitlines(False)
 
     if environments:
-        return  environments
+        return environments
     else:
-        return  glob.glob("**/environment*.yml", recursive=True)
+        return glob.glob("**/environment*.yml", recursive=True)
+
 
 def get_name(fname):
     """
@@ -73,12 +76,8 @@ def get_name(fname):
     """
 
     package = from_file(fname)
-    name  = package.name
+    name = package.name
     version = package.version
-
-    # l = name.split("_")
-    # version = l.pop()
-    # name = "_".join(l)
 
     return name, version
 
@@ -88,13 +87,14 @@ def remote_env_exists(env):
     logger.info("Testing for package name {}".format(env.name))
 
     try:
-        aserver_api.package(os.environ.get("ANACONDA_USER"), env.name)
+        aserver_api.release(os.environ.get("ANACONDA_USER"), env.name, env.version)
         logger.info("Remote env exists. Next!")
     except:
         logger.info("Remote env does not exist! Don't skip!")
         return False
 
     return True
+
 
 def rebuild(filename):
     """
