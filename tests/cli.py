@@ -59,28 +59,23 @@ class IntegrationTest(unittest.TestCase):
     def assertStatusNotOk(self, status):
         self.assertNotEqual(0, status)
 
-    def test_things(self):
+    def test_env(self):
         create_env(environment_1)
-        o, e, s = run('gencore_app build_envs -e environment.yml')
-        self.assertStatusOk(s)
-    #    o, e, s = run('gencore_app build_docs')
-    #    self.assertStatusOk(s)
-    #    o, e, s = run('gencore_app build_man')
-    #    self.assertStatusOk(s)
-    #    o, e, s = run('gencore_app upload_envs')
+        from gencore_app.utils import main_env
+        e = main_env.from_file('environment.yml')
+        self.assertEqual(e.version, '1-0')
+        self.assertEqual(e.name, 'env_1')
 
-    # def test_no_rebuild(self):
-        # create_env(environment_1)
-        # o, e, s = run('gencore_app build_envs')
-        # self.assertStatusOk(s)
-        # o, e, s = run('gencore_app build_docs')
-        # self.assertStatusOk(s)
-        # o, e, s = run('gencore_app build_man')
-        # self.assertStatusOk(s)
-        # o, e, s = run('gencore_app upload_envs')
+    def test_labels(self):
+        create_env(environment_1)
+        from gencore_app.utils import main_env
+        from gencore_app.utils.main_upload import gen_labels
+        e = main_env.from_file('environment.yml')
+        labels = gen_labels(e)
+        self.assertEqual(labels, ['main', 'perl', 'perl=latest'])
 
-    # def tearDown(self):
-        # run('rm -f environment.yml')
+    def tearDown(self):
+        run('rm -f environment.yml')
 
 
 if __name__ == '__main__':

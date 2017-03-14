@@ -10,6 +10,7 @@ import tempfile
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def from_yaml(yamlstr, **kwargs):
     """Load and return a ``Environment`` from a given ``yaml string``"""
     data = yaml.load(yamlstr)
@@ -19,6 +20,7 @@ def from_yaml(yamlstr, **kwargs):
                 data[key] = value
     return Environment(**data)
 
+
 def from_file(filename):
     if not os.path.exists(filename):
         raise exceptions.EnvironmenfilenameNotFound(filename)
@@ -26,10 +28,14 @@ def from_file(filename):
         yamlstr = fp.read()
         return from_yaml(yamlstr, filename=filename)
 
+
 class Environment(Environment):
+
     def __init__(self, name=None, filename=None, channels=None,
-                 dependencies=None, build=0, prefix=None, version=None, **kwargs):
-        super(self.__class__, self).__init__(name, filename, channels, dependencies, prefix)
+                 dependencies=None, build=0, prefix=None, version=None,
+                 **kwargs):
+        super(self.__class__, self).__init__(
+            name, filename, channels, dependencies, prefix)
         self._version = version
         self.build = build
         self.extra_args = kwargs
