@@ -24,7 +24,7 @@ def upload_remote_env(fname, verbose=False):
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, fname, summary='', env_data=dict(env.to_dict()))
+    uploader = Uploader(env.name, conda_safe, summary='', env_data=dict(env.to_dict()))
 
     try:
         url = uploader.upload(labels)
