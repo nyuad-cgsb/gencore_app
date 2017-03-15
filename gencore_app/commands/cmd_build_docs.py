@@ -72,7 +72,6 @@ def name_version(dep_split):
         package_version = dep_split[1]
     else:
         # There is no version
-        # TODO find the actual latest version
         package_name = dep_split[0]
         package_version = 'latest'
 

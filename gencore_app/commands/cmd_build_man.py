@@ -49,9 +49,10 @@ def cli(verbose, environments):
 def docs_prep(fname):
     env = from_file(fname)
     name = env.name
-    version = env.version
-    marked = '_docs/environment/{}-{}.md'.format(name, version)
-    docs = DocPackage(name, version,  marked, fname)
+    version = env._version
+    build = env.build
+    marked = '_docs/environment/{}-{}-{}.md'.format(name, version, build)
+    docs = DocPackage(name, version, build, marked, fname)
     return docs
 
 
@@ -86,7 +87,8 @@ def make_doc_package(docs):
     os.chdir(recipe_dir)
     name = docs.name
 
-    d = {'package': {'name': name + "_docs", 'version': docs.version},
+    d = {'package': {'name': name + "_docs", 'build': docs.build,
+                     'version': docs.version},
          'source': {'path': '{}/build/{}'.format(cwd, docs.name)}}
 
     with open('meta.yaml', 'w') as yaml_file:
@@ -151,8 +153,9 @@ def status_check_man(man_passes):
 
 class DocPackage(object):
 
-    def __init__(self, name, version, marked, env_file):
+    def __init__(self, name, version, build, marked, env_file):
         self.name = name
         self.version = version
+        self.build = build
         self.marked = marked
         self.env_file = env_file
