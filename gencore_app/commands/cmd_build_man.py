@@ -87,7 +87,6 @@ def make_doc_package(docs):
     name = docs.name
 
     d = {'package': {'name': name + "_docs", 'version': docs.version},
-         'build': {'number': docs.build},
          'source': {'path': '{}/build/{}'.format(cwd, docs.name)}}
 
     with open('meta.yaml', 'w') as yaml_file:
