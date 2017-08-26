@@ -10,12 +10,12 @@ from gencore_app.utils.main_env import from_file
 aserver_api = get_server_api()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def run_command(cmd, verbose=True):
 
-    logger.info("Running cmd {}".format(cmd))
+    logger.warn("Running cmd {}".format(cmd))
     readSize = 1024 * 8
 
     try:

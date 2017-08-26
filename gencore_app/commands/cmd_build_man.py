@@ -11,9 +11,8 @@ import shutil
 from binstar_client.utils import get_server_api
 import logging
 
-
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 aserver_api = get_server_api()
 
@@ -31,6 +30,7 @@ def cli(verbose, environments):
     """
 
     logger.info("Building man pages")
+    print("Building man pages!")
 
     files = find_files(environments)
     cwd = os.getcwd()
@@ -47,18 +47,19 @@ def cli(verbose, environments):
 
 
 def docs_prep(fname):
+    logger.info('Preparing docs')
     env = from_file(fname)
     name = env.name
     version = env._version
-    build = env.build
-    marked = '_docs/environment/{}-{}-{}.md'.format(name, version, build)
-    docs = DocPackage(name, version, build, marked, fname)
+    marked = '_docs/environment/{}-{}.md'.format(name, version)
+    docs = DocPackage(name, version, marked, fname)
     return docs
 
 
 def make_man(docs):
 
     logger.info("We are making the man page for {}".format(docs.name))
+    print("We are making the man page for {}".format(docs.name))
     man_dir = "build/{}/share/man/man1".format(docs.name)
 
     os.makedirs(man_dir, exist_ok=True)
@@ -152,9 +153,8 @@ def status_check_man(man_passes):
 
 class DocPackage(object):
 
-    def __init__(self, name, version, build, marked, env_file):
+    def __init__(self, name, version,  marked, env_file):
         self.name = name
         self.version = version
-        self.build = build
         self.marked = marked
         self.env_file = env_file
