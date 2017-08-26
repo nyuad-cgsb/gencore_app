@@ -58,11 +58,10 @@ def docs_prep(fname):
 
 def make_man(docs):
 
-    logger.info("We are making the man page")
+    logger.info("We are making the man page for {}".format(docs.name))
     man_dir = "build/{}/share/man/man1".format(docs.name)
 
-    if not os.path.exists(man_dir):
-        os.makedirs(man_dir)
+    os.makedirs(man_dir, exist_ok=True)
 
     cmd = "marked-man {} > {}/{}.1".format(docs.marked, man_dir, docs.name)
     man_passes = run_command(cmd, True)

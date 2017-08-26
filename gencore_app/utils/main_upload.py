@@ -24,7 +24,8 @@ def upload_remote_env(fname, verbose=False):
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, conda_safe, summary='', env_data=dict(env.to_dict()))
+    uploader = Uploader(env.name, conda_safe, summary='',
+                        env_data=dict(env.to_dict()))
 
     try:
         url = uploader.upload(labels)
@@ -109,8 +110,10 @@ class Uploader(Uploader):
                 print(e)
                 raise
             except Exception as e:
-                logging.debug('We got an uncaught exception uploading to binstar')
+                logging.debug(
+                    'We got an uncaught exception uploading to binstar')
                 raise
         else:
-            logging.debug('This env already exists. Please remove the env or increase the build')
+            logging.debug(
+                'This env already exists. Please remove the env or increase the build')
             raise exceptions.AlreadyExist()

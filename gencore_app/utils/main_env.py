@@ -37,7 +37,6 @@ class Environment(Environment):
         super(self.__class__, self).__init__(
             name, filename, channels, dependencies, prefix)
         self._version = version
-        self.build = build
         self.extra_args = kwargs
 
     @property
@@ -65,8 +64,6 @@ class Environment(Environment):
         d = yaml.dict([('name', self.name)])
         if self.channels:
             d['channels'] = self.channels
-        if self.build:
-            d['build'] = self.build
         if self.dependencies:
             d['dependencies'] = self.dependencies.raw
         if self.prefix:
