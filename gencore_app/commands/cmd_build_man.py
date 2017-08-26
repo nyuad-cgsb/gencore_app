@@ -87,7 +87,7 @@ def make_doc_package(docs):
     os.chdir(recipe_dir)
     name = docs.name
 
-    d = {'package': {'name': name + "_docs", 'build': 0,
+    d = {'package': {'name': name + "_docs", 'build': docs.build,
                      'version': docs.version},
          'source': {'path': '{}/build/{}'.format(cwd, docs.name)}}
 
