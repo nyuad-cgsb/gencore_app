@@ -41,10 +41,8 @@ class Environment(Environment):
 
     @property
     def version(self):
-        if self.build is not None:
-            return "{}-{}".format(self._version, self.build)
-        elif self._version:
-            return self._version
+        if self._version is not None:
+            return "{}".format(self._version)
         else:
             return time.strftime('%Y.%m.%d.%H%M')
 
