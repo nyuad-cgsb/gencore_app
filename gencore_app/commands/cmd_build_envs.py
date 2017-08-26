@@ -5,6 +5,7 @@ from gencore_app.cli import global_test_options
 from gencore_app.utils.main import find_files, rebuild
 from gencore_app.utils.main_build_env import status_check_build, try_conda_env_create
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -24,6 +25,7 @@ def cli(verbose, environments):
 
     for filename in files:
 
+        # TODO - Have better specifications for deciding which envs to build
         if rebuild(filename):
             logger.info('Building {}'.format(filename))
             build_passes = try_conda_env_create(filename)

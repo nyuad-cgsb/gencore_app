@@ -12,6 +12,7 @@ aserver_api = get_server_api()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def run_command(cmd, verbose=True):
 
     logger.info("Running cmd {}".format(cmd))
@@ -19,7 +20,7 @@ def run_command(cmd, verbose=True):
 
     try:
         p = sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.STDOUT,
-                             stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
+                     stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
     except OSError as err:
         print("OS Error: {0}".format(err))
 
@@ -50,12 +51,20 @@ def run_command(cmd, verbose=True):
     else:
         return False
 
+
 def find_files(environments):
 
+    # By default we will check to see if there
+    # any recipes committed
+    recipes = os.environ.get('RECIPES')
+    if recipes:
+        return recipes.splitlines(False)
+
     if environments:
-        return  environments
+        return environments
     else:
-        return  glob.glob("**/environment*.yml", recursive=True)
+        return glob.glob("**/environment*.yml", recursive=True)
+
 
 def get_name(fname):
     """
@@ -64,25 +73,21 @@ def get_name(fname):
     This corresponds to module gencore_metagenomics/1.0
     This method will go away when there are versions!
 
-    We have versions!
     """
 
     package = from_file(fname)
-    name  = package.name
-#    version = package.version
-
-    l = name.split("_")
-    version = l.pop()
-    name = "_".join(l)
+    name = package.name
+    version = package.version
 
     return name, version
+
 
 def remote_env_exists(env):
 
     logger.info("Testing for package name {}".format(env.name))
 
     try:
-        aserver_api.package(os.environ.get("ANACONDA_USER"), env.name)
+        aserver_api.release(os.environ.get("ANACONDA_USER"), env.name, env.version)
         logger.info("Remote env exists. Next!")
     except:
         logger.info("Remote env does not exist! Don't skip!")
@@ -90,21 +95,23 @@ def remote_env_exists(env):
 
     return True
 
+
 def rebuild(filename):
     """
     Return a boolean based on whether or not we are building the environment
-    1. If the environment does not exist - we always build iti
+    1. If the environment does not exist - we always build it
     2. If the remote environment exists
         a. rebuild: True specified in yaml - rebuild
         b. rebuld not specified in yaml - don't rebuild
     """
-    #TODO add in md5 sum check instead of if env exists
+    # TODO add in md5 sum check instead of if env exists
 
     env = from_file(filename)
 
     if not remote_env_exists(env):
         return True
-    elif 'rebuild' in env.extra_args and env.extra_args['rebuild']:
-        return True
+    # this is deprecated - now we increase the build string
+    # elif 'rebuild' in env.extra_args and env.extra_args['rebuild']:
+    #     return True
     else:
         return False

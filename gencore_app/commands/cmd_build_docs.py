@@ -4,10 +4,12 @@ from binstar_client.utils import get_server_api
 from gencore_app.utils.main import rebuild, find_files
 import logging
 from gencore_app.utils.main_env import Environment, from_file
+import os
 
 # logging.basicConfig(level=logger.info)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 
 @click.command('build_docs', short_help='Build docs')
 @global_test_options
@@ -15,21 +17,25 @@ def cli(verbose, environments):
     """ Build markdown docs for GitBooks
         1. Check if remote env exists or force_rebuild enabled
             a. If env exists skip building docs for this packge
-            b. If env exists, but force_rebuild enabled, rebuild the docs anyways
+            b. If env exists, but force_rebuild enabled,
+                rebuild the docs anyways
         2. Build the software docs
             a. Parse the conda configuration file, getting each dependency
-            b. For each dependency search some information from conda: namely version and summary
+            b. For each dependency search some information from conda:
+                namely version and summary
             c. Add these to the markdown doc
         3. Build the summary doc
             a. The summary doc is a 'Table of Contents' for the GitBooks site
         4. Write the table doc
-            a. This is a big matrix, which will probably be split into many matrices, describing which software is in which module
+            a. This is a big matrix, which will probably be split into
+                many matrices, describing which software is in which module
     """
 
     click.echo("We are building the docs for GitHub Pages")
 
     docs = MeMyDocs()
     docs.write_docs(environments)
+
 
 def flatten_deps(deps):
     flat_deps = []
@@ -46,25 +52,37 @@ def flatten_deps(deps):
 
     return flat_deps
 
+
+def parse_dict_deps(dep):
+    dep_split = dep.split('=')
+    return name_version(dep_split)
+
+
 def parse_deps(dep):
 
     dep_split = dep.rsplit('_', 1)
+    return name_version(dep_split)
+
+
+def name_version(dep_split):
 
     if len(dep_split) == 2:
-        #There is a version
+        # There is a version
         package_name = dep_split[0]
         package_version = dep_split[1]
     else:
-        #There is no version
+        # There is no version
         package_name = dep_split[0]
         package_version = 'latest'
 
     return package_name, package_version
 
+
 class TrackSoftware():
 
     def __init__(self):
         self.deps = {}
+
 
 class DepPackage():
 
@@ -79,6 +97,7 @@ class DepPackage():
         self.envs.append(env)
         self.envs.sort()
 
+
 class MeMyDocs():
 
     def __init__(self):
@@ -90,12 +109,11 @@ class MeMyDocs():
         self.all_envs.append(self.environment)
         self.all_envs.sort()
 
-
     def search_deps(self, dep, version, channels):
 
         key = "{}={}".format(dep, version)
 
-        if  key not in self.track_software.deps.keys():
+        if key not in self.track_software.deps.keys():
             aserver_api = get_server_api()
 
             package = None
@@ -103,23 +121,29 @@ class MeMyDocs():
             for channel in channels:
                 try:
                     package = aserver_api.package(channel, dep)
-                    logger.info("Package {} exists in channel {}.".format(dep, channel))
+                    # logger.info(
+                    #     "Package {} exists in channel {}."
+                    # .format(dep, channel))
                 except:
-                    logger.info("Package {} does not exist in channel {}.".format(dep, channel))
+                    package = None
+                    # logger.info(
+                    #     "Package {} does not exist in channel {}."
+                    # .format(dep, channel))
 
-                if package:
-                    dep_obj = DepPackage(dep, version, package['summary'], channel )
+                if package is not None:
+                    dep_obj = DepPackage(dep, version, package[
+                                         'summary'], channel)
                     self.track_software.deps[key] = dep_obj
                     dep_obj.add_envs(self.environment)
                     return dep_obj
 
-            #must come from default or channels not defined in environment.yml
-            dep_obj = DepPackage(dep, version, '', 'default' )
+            # must come from default or channels not defined in environment.yml
+            dep_obj = DepPackage(dep, version, '', 'default')
             dep_obj.add_envs(self.environment)
             self.track_software.deps[key] = dep_obj
             return dep_obj
         else:
-            dep_obj  = self.track_software.deps[key]
+            dep_obj = self.track_software.deps[key]
 
             if self.environment not in dep_obj.envs:
                 dep_obj.add_envs(self.environment)
@@ -128,14 +152,11 @@ class MeMyDocs():
 
     def write_env_markdown(self, fname):
 
-        # if not rebuild(fname):
-            # return
-
         package = from_file(fname)
-
         name = package.name
         version = package.version
-        self.environment = name
+
+        self.environment = name + '-' + version
         self.add_envs()
 
         p_dict = package.to_dict()
@@ -147,8 +168,8 @@ class MeMyDocs():
 
         channels = p_dict['channels']
 
-        # f = open('/nyuad-conda-configs/_docs/environment/{}.md'.format(name), 'w')
-        f = open('_docs/environment/{}_{}.md'.format(name, version), 'w')
+        os.makedirs('_docs/environment', exist_ok=True)
+        f = open('_docs/environment/{}-{}.md'.format(name, version), 'w')
 
         f.write("# {}\n".format(name))
 
@@ -159,9 +180,10 @@ class MeMyDocs():
         f.write("## Software Packages\n\n")
 
         for dep in deps:
-            package_name, package_version = parse_deps(dep)
+            package_name, package_version = parse_dict_deps(dep)
 
-            package_obj = self.search_deps(package_name, package_version, channels)
+            package_obj = self.search_deps(
+                package_name, package_version, channels)
 
             f.write("### {}\n".format(package_name))
 
@@ -175,6 +197,7 @@ class MeMyDocs():
 
     def write_software_markdown(self):
 
+        os.makedirs('_docs/software', exist_ok=True)
         f = open('_docs/software/software.md', 'w')
         f.write("# Software\n\n")
 
@@ -192,7 +215,7 @@ class MeMyDocs():
             f.write("**Conda Channel:** {}\n\n".format(dep_obj.channel))
             f.write("### HPC Modules\n\n")
 
-            #TODO Format these as urls
+            # TODO Format these as urls
             for tenv in dep_obj.envs:
                 f.write("* {}\n".format(tenv))
 
@@ -211,7 +234,8 @@ class MeMyDocs():
         f.write("* [HPC Modules](environment/environments.md)\n")
 
         for tenv in self.all_envs:
-            f.write("\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv))
+            f.write(
+                "\t* [{}](environment/{}.md)\n".format(tenv.capitalize(), tenv, tenv))
 
     def write_table_markdown(self):
 

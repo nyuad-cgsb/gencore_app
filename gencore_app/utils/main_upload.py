@@ -5,32 +5,47 @@ from gencore_app.utils.main import run_command
 from conda_env.env import Environment
 from conda_env.utils.uploader import Uploader
 from gencore_app.utils.main_env import from_file
-from gencore_app.commands.cmd_build_docs import flatten_deps, parse_deps
+from gencore_app.commands.cmd_build_docs import flatten_deps, parse_dict_deps
 from conda_env import exceptions
+try:
+    from binstar_client.utils import get_server_api
+    from binstar_client import errors
+except ImportError:
+    get_binstar = None
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
+
 
 def upload_remote_env(fname, verbose=False):
 
-    #TODO Update this to use conda env upload utils
-    logging.info("Uploading remote env of {}".format(fname))
+    # TODO Update this to use conda env upload utils
+    logging.debug("Uploading remote env of {}".format(fname))
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, conda_safe, summary='', env_data=dict(env.to_dict()))
-    # uploader.version = env.version
-    info = uploader.upload(labels)
-    url = info.get('url', 'anaconda.org')
-    logging.info("Your environment file has been uploaded to {}".format(url))
+    uploader = Uploader(env.name, conda_safe, summary='',
+                        env_data=dict(env.to_dict()))
+
+    try:
+        url = uploader.upload(labels)
+    except Exception as e:
+        logging.debug('Getting exceptions and not sure why')
+        logging.debug(e)
+        raise
+
+    logging.debug('Completed uploader.upload')
+    logging.debug(url)
+
 
 def status_check_upload(upload_env_passes):
 
     if not upload_env_passes:
-        logging.info("One or more uploads failed!")
+        logging.debug('One or more uploads failed!')
         sys.exit(1)
     else:
-        logging.info("Upload passed!")
+        logging.debug('Upload passed!')
+
 
 def gen_labels(env):
     labels = ['main']
@@ -39,7 +54,7 @@ def gen_labels(env):
     flat_deps = flatten_deps(deps)
 
     for dep in flat_deps:
-        p = parse_deps(dep)
+        p = parse_dict_deps(dep)
         t = p[0] + '=' + p[1]
         labels.append(p[0])
         labels.append(t)
@@ -50,7 +65,9 @@ def gen_labels(env):
 
     return labels
 
+
 class Uploader(Uploader):
+
     def __init__(self, packagename, env_file, **kwargs):
         super(self.__class__, self).__init__(packagename, env_file, **kwargs)
         self.env_data = kwargs.get('env_data')
@@ -62,6 +79,12 @@ class Uploader(Uploader):
         else:
             return time.strftime('%Y.%m.%d.%H%M')
 
+    @property
+    def binstar(self):
+        if self._binstar is None:
+            self._binstar = get_server_api()
+        return self._binstar
+
     def upload(self, labels):
         """
         Prepares and uploads env file
@@ -70,15 +93,27 @@ class Uploader(Uploader):
 
         print('env data')
         print(self.env_data)
-        # uploader = Uploader(name, args.file, summary=summary, env_data=dict(env.to_dict()))
         print("Uploading environment %s to anaconda-server (%s)... " %
               (self.packagename, self.binstar.domain))
         if self.is_ready():
-            with open(self.file, mode='rb') as envfile:
-                return self.binstar.upload(self.username, self.packagename,
-                                           self.version, self.basename, envfile,
-                                           channels=labels,
-                                           distribution_type='env', attrs=self.env_data)
+            try:
+                with open(self.file, mode='rb') as envfile:
+                    binstarUpload = self.binstar.upload(
+                        self.username, self.packagename,
+                        self.version, self.basename,
+                        envfile, channels=labels,
+                        distribution_type='env',
+                        attrs=self.env_data
+                    )
+                    return binstarUpload
+            except SystemExit as e:
+                print(e)
+                raise
+            except Exception as e:
+                logging.debug(
+                    'We got an uncaught exception uploading to binstar')
+                raise
         else:
-            #If we are in the master branch we should get the conflicting version,
+            logging.debug(
+                'This env already exists. Please remove the env or increase the build')
             raise exceptions.AlreadyExist()
