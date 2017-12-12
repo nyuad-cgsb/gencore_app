@@ -55,7 +55,7 @@ def gen_labels(env):
 
     for dep in flat_deps:
         p = parse_dict_deps(dep)
-        t = p[0] + '=' + p[1]
+        t = p[0] + '==' + p[1]
         labels.append(p[0])
         labels.append(t)
 

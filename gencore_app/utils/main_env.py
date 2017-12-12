@@ -38,6 +38,7 @@ class Environment(Environment):
             name, filename, channels, dependencies, prefix)
         self._version = version
         self.extra_args = kwargs
+        self.build = build
 
     @property
     def version(self):

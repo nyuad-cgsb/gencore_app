@@ -52,7 +52,7 @@ def docs_prep(fname):
     name = env.name
     version = env._version
     marked = '_docs/environment/{}-{}.md'.format(name, version)
-    docs = DocPackage(name, version, marked, fname)
+    docs = DocPackage(name, version, env.build, marked, fname)
     return docs
 
 
@@ -153,8 +153,9 @@ def status_check_man(man_passes):
 
 class DocPackage(object):
 
-    def __init__(self, name, version,  marked, env_file):
+    def __init__(self, name, version,  build, marked, env_file):
         self.name = name
         self.version = version
         self.marked = marked
         self.env_file = env_file
+        self.build = build

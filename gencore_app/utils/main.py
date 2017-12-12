@@ -4,7 +4,6 @@ import glob
 import os
 
 from binstar_client.utils import get_server_api
-# from conda_env.env import  from_file
 from gencore_app.utils.main_env import from_file
 
 aserver_api = get_server_api()
