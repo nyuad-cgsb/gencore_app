@@ -28,6 +28,7 @@ def cli(verbose, environments):
         # TODO - Have better specifications for deciding which envs to build
         if rebuild(filename):
             logger.warn('Building {}'.format(filename))
+            print('Building {}'.format(filename))
             build_passes = try_conda_env_create(filename)
             status_check_build(build_passes)
         else:
