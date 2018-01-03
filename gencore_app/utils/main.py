@@ -9,7 +9,7 @@ from gencore_app.utils.main_env import from_file
 aserver_api = get_server_api()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def run_command(cmd, verbose=True):
@@ -83,13 +83,13 @@ def get_name(fname):
 
 def remote_env_exists(env):
 
-    logger.info("Testing for package name {}".format(env.name))
+    logger.debug("Testing for package name {}".format(env.name))
 
     try:
         aserver_api.release(os.environ.get("ANACONDA_USER"), env.name, env.version)
-        logger.info("Remote env exists. Next!")
+        logger.debug("Remote env exists. Next!")
     except:
-        logger.info("Remote env does not exist! Don't skip!")
+        logger.debug("Remote env does not exist! Don't skip!")
         return False
 
     return True
