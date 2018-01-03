@@ -8,7 +8,7 @@ import logging
 import os
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 @click.command('build_envs', short_help='Build environments')
 @global_test_options
