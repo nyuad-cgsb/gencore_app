@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 def run_command(cmd, verbose=True):
 
     logger.warn("Running cmd {}".format(cmd))
-    readSize = 1024 * 8
+    readSize = 1024 * 4
 
     try:
         p = sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.STDOUT,
@@ -33,7 +33,7 @@ def run_command(cmd, verbose=True):
         output = p.stdout.read(readSize).decode("utf-8")
 
         if output and verbose:
-            logger.info(output)
+            logger.warn(output)
 
         ec = p.poll()
 
