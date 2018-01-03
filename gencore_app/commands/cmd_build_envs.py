@@ -18,7 +18,7 @@ def cli(verbose, environments):
        2. Build the env.
        3. Exit if anything bad happens """
 
-    logger.warn("environments are {}".format(environments))
+    logger.info("environments are {}".format(environments))
 
     files = find_files(environments)
     logger.warn('files are {}'.format(files))
@@ -32,4 +32,4 @@ def cli(verbose, environments):
             build_passes = try_conda_env_create(filename)
             status_check_build(build_passes)
         else:
-            logger.warn('Remote env exists and rebuild not specified for {}'.format(filename))
+            logger.info('Remote env exists and rebuild not specified for {}'.format(filename))
