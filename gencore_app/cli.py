@@ -25,8 +25,9 @@ class MyCLI(click.MultiCommand):
                 name = name.encode('ascii', 'replace')
             mod = __import__('gencore_app.commands.cmd_' + name,
                                 None, None, ['cli'])
-        except ImportError:
+        except ImportError as error:
             click.echo("we got an import error on {}".format(name))
+            click.echo("{}".format(error))
             return
         return mod.cli
 
