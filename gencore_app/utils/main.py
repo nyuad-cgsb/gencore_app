@@ -53,7 +53,10 @@ def run_command(cmd, verbose=True):
         # - otherwise the stdout/stderr buffer gets filled and it all stops working
         output = p.stdout.read(readSize).decode("utf-8")
         if output and verbose:
-            logger.warn(output)
+            ## I don't want to see these - I know they are there
+            ##TODO Add a config that allows for getting rid of strings
+            if 'file exists, but clobbering' not in output:
+                logger.warn(output)
 
         ec = p.poll()
 
