@@ -57,6 +57,8 @@ def run_command(cmd, verbose=True):
 
         ec = p.poll()
 
+    scheduler.shutdown()
+
     # read remaining data (all of it)
     output = p.stdout.read(readSize).decode("utf-8")
 
@@ -65,8 +67,6 @@ def run_command(cmd, verbose=True):
 
     logger.info("Exit Code {}".format(ec))
 
-    if ec is not None:
-        scheduler.shutdown()
     if ec == 0:
         return True
     else:
