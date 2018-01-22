@@ -52,7 +52,6 @@ def run_command(cmd, verbose=True):
         # need to read from time to time.
         # - otherwise the stdout/stderr buffer gets filled and it all stops working
         output = p.stdout.read(readSize).decode("utf-8")
-        print('Hello')
         if output and verbose:
             logger.warn(output)
 
