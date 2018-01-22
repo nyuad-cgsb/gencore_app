@@ -41,7 +41,7 @@ def run_conda_env_create(fname):
 
     remove_envs = "rm -rf /anaconda/envs/*"
     if run_command(remove_envs):
-        cmd = "conda env create --quiet --force --file {}".format(fname)
+        cmd = "conda env create --verbose --force --file {}".format(fname)
         return run_command(cmd)
     else:
         return False

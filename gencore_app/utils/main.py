@@ -6,11 +6,31 @@ import os
 from binstar_client.utils import get_server_api
 from gencore_app.utils.main_env import from_file
 
+from datetime import datetime
+import time
+import os
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
 aserver_api = get_server_api()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
+import threading
+
+def tick():
+    print('Tick! The time is: %s' % datetime.now())
+
+def scheduleit():
+    """
+    This is solely to force some output to the screen while conda is running
+    """
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(tick, 'interval', seconds=60)
+    scheduler.start()
+    return scheduler
 
 def run_command(cmd, verbose=True):
 
@@ -26,12 +46,13 @@ def run_command(cmd, verbose=True):
     p.stdin.close()
 
     ec = p.poll()
+    scheduler = scheduleit()
 
     while ec is None:
         # need to read from time to time.
         # - otherwise the stdout/stderr buffer gets filled and it all stops working
         output = p.stdout.read(readSize).decode("utf-8")
-
+        print('Hello')
         if output and verbose:
             logger.warn(output)
 
@@ -45,6 +66,8 @@ def run_command(cmd, verbose=True):
 
     logger.info("Exit Code {}".format(ec))
 
+    if ec is not None:
+        scheduler.shutdown()
     if ec == 0:
         return True
     else:
