@@ -19,7 +19,7 @@ logger.setLevel(logging.DEBUG)
 
 def upload_remote_env(fname, verbose=False):
 
-    # TODO Update this to use conda env upload utils
+    ##TODO - 2 uploads one with the packagename and one with packagename-version
     logging.debug("Uploading remote env of {}".format(fname))
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
