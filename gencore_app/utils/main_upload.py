@@ -7,6 +7,7 @@ from conda_env.utils.uploader import Uploader
 from gencore_app.utils.main_env import from_file
 from gencore_app.commands.cmd_build_docs import flatten_deps, parse_dict_deps
 from conda_env import exceptions
+
 try:
     from binstar_client.utils import get_server_api
     from binstar_client import errors
@@ -18,7 +19,6 @@ logger.setLevel(logging.DEBUG)
 
 
 def upload_remote_env(fname, verbose=False):
-
     ##TODO - 2 uploads one with the packagename and one with packagename-version
     logging.debug("Uploading remote env of {}".format(fname))
     env = from_file(fname)
@@ -39,7 +39,6 @@ def upload_remote_env(fname, verbose=False):
 
 
 def status_check_upload(upload_env_passes):
-
     if not upload_env_passes:
         logging.debug('One or more uploads failed!')
         sys.exit(1)
@@ -98,10 +97,11 @@ class Uploader(Uploader):
         if self.is_ready():
             try:
                 with open(self.file, mode='rb') as envfile:
+                    # channels = labels,
                     binstarUpload = self.binstar.upload(
                         self.username, self.packagename,
                         self.version, self.basename,
-                        envfile, channels=labels,
+                        envfile,
                         distribution_type='env',
                         attrs=self.env_data
                     )
