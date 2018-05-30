@@ -42,8 +42,10 @@ def print_dockerfile(name, version):
                          trim_blocks=False)
 
     docker_file = 'Dockerfile.jinja'
+    cache = '--no-cache'
     if 'biosails' in name:
         docker_file = 'biosails-DockerFile.jinja'
+        cache = ''
     tmp = j2_env.get_template(docker_file).render(name=name, version=version)
 
     dirpath = tempfile.mkdtemp()
@@ -56,5 +58,5 @@ def print_dockerfile(name, version):
     f.write(tmp)
     f.close()
 
-    run_command('docker build -t quay.io/nyuad_cgsb/{}:{} .'.format(name, version), verbose=True)
-    run_command('docker build -t quay.io/nyuad_cgsb/{}:latest .'.format(name, version), verbose=True)
+    run_command('docker build {} -t quay.io/nyuad_cgsb/{}:{} .'.format(cache, name, version), verbose=True)
+    run_command('docker build {} -t quay.io/nyuad_cgsb/{}:latest .'.format(cache, name, version), verbose=True)
