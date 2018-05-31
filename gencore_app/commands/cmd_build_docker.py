@@ -58,5 +58,5 @@ def print_dockerfile(name, version):
     f.write(tmp)
     f.close()
 
-    run_command('docker build {} -t quay.io/nyuad_cgsb/{}:{} .'.format(cache, name, version), verbose=True)
-    run_command('docker build {} -t quay.io/nyuad_cgsb/{}:latest .'.format(cache, name, version), verbose=True)
+    run_command('docker build --rm {} -t quay.io/nyuad_cgsb/{}:{} .'.format(cache, name, version), verbose=True)
+    run_command('docker build --rm {} -t quay.io/nyuad_cgsb/{}:latest .'.format(cache, name, version), verbose=True)
