@@ -59,4 +59,4 @@ def print_dockerfile(name, version):
     f.close()
 
     run_command('docker build --rm {} -t quay.io/nyuad_cgsb/{}:{} .'.format(cache, name, version), verbose=True)
-    run_command('docker build --rm {} -t quay.io/nyuad_cgsb/{}:latest .'.format(cache, name, version), verbose=True)
+    run_command('docker image tag quay.io/nyuad_cgsb/{}:{} quay.io/nyuad_cgsb/{}:latest'.format(name, version, name, version), verbose=True)
