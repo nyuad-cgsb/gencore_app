@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e83150cd-67f0-4b24-9739-f41cb98c9147" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main.py" afterPath="$PROJECT_DIR$/gencore_app/utils/main.py" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main_build_env.py" afterPath="$PROJECT_DIR$/gencore_app/utils/main_build_env.py" />
-    </list>
+    <list default="true" id="e83150cd-67f0-4b24-9739-f41cb98c9147" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
