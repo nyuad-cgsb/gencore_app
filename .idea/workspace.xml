@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e83150cd-67f0-4b24-9739-f41cb98c9147" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/gencore_app/utils/main_parallel_build_env.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,7 +13,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main_parallel_build_env.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_parallel_build_env.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gencore_app/utils/main_parallel_build_env.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="483">
@@ -39,12 +37,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cmd_parallel_install.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="cmd_parallel_install.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="230">
+              <caret line="10" column="153" lean-forward="false" selection-start-line="10" selection-start-column="153" selection-end-line="10" selection-end-column="153" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,8 +87,8 @@
         <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_build_env.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main.py" />
-        <option value="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_parallel_build_env.py" />
+        <option value="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py" />
       </list>
     </option>
   </component>
@@ -375,14 +375,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gencore_app/utils/main_env.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
@@ -409,6 +401,16 @@
           <caret line="21" column="22" lean-forward="false" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="153" lean-forward="false" selection-start-line="10" selection-start-column="153" selection-end-line="10" selection-end-column="153" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
