@@ -40,8 +40,8 @@
       <file leaf-file-name="cmd_parallel_install.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="10" column="153" lean-forward="false" selection-start-line="10" selection-start-column="153" selection-end-line="10" selection-end-column="153" />
+            <state relative-caret-position="281">
+              <caret line="14" column="14" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -407,8 +407,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_parallel_install.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="153" lean-forward="false" selection-start-line="10" selection-start-column="153" selection-end-line="10" selection-end-column="153" />
+        <state relative-caret-position="281">
+          <caret line="14" column="14" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>

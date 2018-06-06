@@ -8,9 +8,13 @@ import os
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-@click.command('parallel_install', short_help='Given a conda env, run a parallel install on each dependency. This should never be used in production! Ever!')
-@global_test_options
 
+@click.command('parallel_install',
+               short_help="""
+               Given a conda env, run a parallel install on each dependency. 
+               This should never be used in production! Ever!
+               """)
+@global_test_options
 def cli(verbose, environments):
     """
         This is a super, duper, hacky way of running a parallel install from conda
