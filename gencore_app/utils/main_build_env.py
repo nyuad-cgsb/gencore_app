@@ -50,7 +50,7 @@ def run_conda_env_create(fname):
 def status_check_build(build_passes):
 
     if not build_passes:
-        logging.warn("One or more builds did not pass!")
+        logging.warning("One or more builds did not pass!")
         sys.exit(1)
     else:
         logging.info("Build passed!")

@@ -45,7 +45,7 @@ def print_dockerfile(name, version):
     cache = '--no-cache'
     if 'biosails' in name:
         docker_file = 'biosails-DockerFile.jinja'
-        cache = ''
+        cache = '--no-cache'
     tmp = j2_env.get_template(docker_file).render(name=name, version=version)
 
     dirpath = tempfile.mkdtemp()

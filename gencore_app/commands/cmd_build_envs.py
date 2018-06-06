@@ -14,20 +14,22 @@ logger.setLevel(logging.INFO)
 @global_test_options
 
 def cli(verbose, environments):
-    """1. Check remote env exists.
+    """
+        1. Check remote env exists.
        2. Build the env.
-       3. Exit if anything bad happens """
+       3. Exit if anything bad happens
+    """
 
     logger.info("environments are {}".format(environments))
 
     files = find_files(environments)
-    logger.warn('files are {}'.format(files))
+    logger.warning('files are {}'.format(files))
 
     for filename in files:
 
         # TODO - Have better specifications for deciding which envs to build
         if rebuild(filename):
-            logger.warn('Building {}'.format(filename))
+            logger.warning('Building {}'.format(filename))
             print('Building {}'.format(filename))
             build_passes = try_conda_env_create(filename)
             status_check_build(build_passes)

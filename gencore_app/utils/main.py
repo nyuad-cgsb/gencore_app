@@ -20,8 +20,10 @@ logger.setLevel(logging.INFO)
 
 import threading
 
+
 def tick():
     print('Tick! The time is: %s' % datetime.now())
+
 
 def scheduleit():
     """
@@ -32,6 +34,8 @@ def scheduleit():
     scheduler.start()
     return scheduler
 
+
+## TODO Update these function calls so that verbose is actually passed
 def run_command(cmd, verbose=True):
 
     logger.warn("Running cmd {}".format(cmd))
@@ -42,6 +46,10 @@ def run_command(cmd, verbose=True):
                      stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
     except OSError as err:
         print("OS Error: {0}".format(err))
+        raise err
+    except Exception as err:
+        print("OS Error: {0}".format(err))
+        raise()
 
     p.stdin.close()
 
@@ -56,7 +64,9 @@ def run_command(cmd, verbose=True):
             ## I don't want to see these - I know they are there
             ##TODO Add a config that allows for getting rid of strings
             if 'file exists, but clobbering' not in output:
-                logger.warn(output)
+                logger.warning(output)
+            else:
+                logger.info(output)
 
         ec = p.poll()
 
