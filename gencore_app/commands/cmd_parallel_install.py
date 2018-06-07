@@ -11,10 +11,10 @@ logger.setLevel(logging.INFO)
 
 @click.command('parallel_install',
                short_help="""
-               Given a conda env, run a parallel install on each dependency. 
+               Given a conda env, run a parallel download on each dependency. 
                This should never be used in production! Ever!
                This is a hack. It does not solve the package environment, 
-               just hopefully installs most of the packages in parallel
+               just hopefully downloads most of the packages in parallel
                """)
 @global_test_options
 def cli(verbose, environments):
