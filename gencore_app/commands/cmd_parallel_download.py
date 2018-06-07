@@ -1,20 +1,19 @@
 import click
 from gencore_app.cli import global_test_options
 from gencore_app.utils.main import find_files, rebuild
-from gencore_app.utils.main_parallel_build_env import run_parallel_install
+from gencore_app.utils.main_parallel_build_env import run_parallel_download
 import logging
-import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-@click.command('parallel_install',
+@click.command('parallel_download',
                short_help="""
-               Given a conda env, run a parallel install on each dependency. 
+               Given a conda env, run a parallel download on each dependency. 
                This should never be used in production! Ever!
                This is a hack. It does not solve the package environment, 
-               just hopefully installs most of the packages in parallel
+               just hopefully downloads most of the packages in parallel
                """)
 @global_test_options
 def cli(verbose, environments):
@@ -31,6 +30,6 @@ def cli(verbose, environments):
     for filename in files:
         if rebuild(filename):
             logger.warning('Installing packages from {}'.format(filename))
-            run_parallel_install(filename)
+            run_parallel_download(filename)
         else:
             logger.info('Remote env exists and rebuild not specified for {}'.format(filename))

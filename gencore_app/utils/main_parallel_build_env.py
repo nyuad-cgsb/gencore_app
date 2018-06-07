@@ -4,6 +4,7 @@ from gencore_app.utils.main_env import from_file
 import multiprocessing
 from random import shuffle
 from multiprocessing import Pool
+import os
 
 
 def worker(cmd):
@@ -11,23 +12,33 @@ def worker(cmd):
     run_command(cmd)
     return
 
+##TODO Get this from remote env also
 
-def run_parallel_install(fname):
-    env = from_file(fname)
+
+def get_env_data(filename):
+    env = from_file(filename)
     deps = env.dependencies.get('conda')
-    jobs = []
-    pool = Pool(processes=4)  # start 4 worker processes
+    max_threads = 4
+    if os.environ.get('MAX_THREADS'):
+        max_threads = os.environ.get('MAX_THREADS')
+    pool = Pool(processes=max_threads)  # start 4 worker processes
+    return deps, max_threads, pool
+
+
+def run_parallel_install(filename):
+    deps, max_threads, pool = get_env_data(filename)
     for dep in deps:
-        cmd = 'conda install --download-only -y {}'.format(dep)
-        jobs.append(cmd)
+        cmd = 'conda install -y {}'.format(dep)
         pool.apply_async(worker, args=(cmd,))
     pool.close()
     pool.join()
 
 
-if __name__ == '__main__':
-    jobs = []
-    for i in range(5):
-        p = multiprocessing.Process(target=worker, args=(i,))
-        jobs.append(p)
-        p.start()
+def run_parallel_download(filename):
+    deps, max_threads, pool = get_env_data(filename)
+    for dep in deps:
+        cmd = 'conda install --download-only -y {}'.format(dep)
+        pool.apply_async(worker, args=(cmd,))
+    pool.close()
+    pool.join()
+

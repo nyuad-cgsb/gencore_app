@@ -42,7 +42,7 @@ def print_dockerfile(name, version):
                          trim_blocks=False)
 
     docker_file = 'Dockerfile.jinja'
-    cache = '--no-cache'
+    cache = ''
     if 'biosails' in name:
         docker_file = 'biosails-DockerFile.jinja'
         cache = '--no-cache'
