@@ -121,7 +121,7 @@ def remote_env_exists(env):
     logger.debug("Testing for package name {}".format(env.name))
 
     try:
-        aserver_api.release(os.environ.get("ANACONDA_USER"), env.name, env.version)
+        aserver_api.release(os.environ.get("ANACONDA_USER"), '{}-{}'.format(env.name, env.version), env.version)
         logger.debug("Remote env exists. Next!")
     except:
         logger.debug("Remote env does not exist! Don't skip!")

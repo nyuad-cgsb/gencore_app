@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e83150cd-67f0-4b24-9739-f41cb98c9147" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main_upload.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/utils/main_upload.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/package_template/template.eb" beforeDir="false" afterPath="$PROJECT_DIR$/tests/package_template/template.eb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/utils/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gencore_app/utils/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1196">
-              <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
+            <state relative-caret-position="445">
+              <caret line="123" column="66" selection-start-line="123" selection-start-column="66" selection-end-line="123" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -43,11 +39,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_build_eb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="46" selection-start-line="46" selection-end-line="46" />
+            <state relative-caret-position="340">
+              <caret line="43" column="68" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gencore_app/utils/main_env.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1270">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -71,7 +76,6 @@
       <list>
         <option value="$PROJECT_DIR$/gencore_app/utils/main_env.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_build_env.py" />
-        <option value="$PROJECT_DIR$/gencore_app/utils/main.py" />
         <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_parallel_build_env.py" />
         <option value="$PROJECT_DIR$/gencore_app/commands/cmd_parallel_download.py" />
@@ -79,6 +83,7 @@
         <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_upload.py" />
         <option value="$PROJECT_DIR$/tests/package_template/template.eb" />
+        <option value="$PROJECT_DIR$/gencore_app/utils/main.py" />
       </list>
     </option>
   </component>
@@ -185,12 +190,12 @@
       <option name="presentableId" value="Default" />
       <updated>1526889115153</updated>
       <workItem from="1547454736351" duration="539000" />
-      <workItem from="1547966712892" duration="249000" />
+      <workItem from="1547966712892" duration="528000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="788000" />
+    <option name="totallyTimeSpent" value="1067000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -296,20 +301,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gencore_app/utils/main_env.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gencore_app/utils/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1196">
-          <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/environment.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
@@ -333,8 +324,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_build_eb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="340">
+          <caret line="43" column="68" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gencore_app/utils/main_env.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1270">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gencore_app/utils/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="123" column="66" selection-start-line="123" selection-start-column="66" selection-end-line="123" selection-end-column="66" />
         </state>
       </provider>
     </entry>
