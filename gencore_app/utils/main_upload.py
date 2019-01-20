@@ -19,12 +19,12 @@ logger.setLevel(logging.DEBUG)
 
 
 def upload_remote_env(fname, verbose=False):
-    ##TODO - 2 uploads one with the packagename and one with packagename-version
+    # TODO - 2 uploads one with the packagename and one with packagename-version
     logging.debug("Uploading remote env of {}".format(fname))
     env = from_file(fname)
     conda_safe = env.save_conda_safe()
     labels = gen_labels(env)
-    uploader = Uploader(env.name, conda_safe, summary='',
+    uploader = Uploader('{}-{}'.format(env.name, env.version), conda_safe, summary='',
                         env_data=dict(env.to_dict()))
 
     try:

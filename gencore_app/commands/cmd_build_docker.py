@@ -42,20 +42,27 @@ def print_dockerfile(name, version):
                          trim_blocks=False)
 
     docker_file = 'Dockerfile.jinja'
-    cache = ''
+    cache = '--no-cache'
     if 'biosails' in name:
         docker_file = 'biosails-DockerFile.jinja'
         cache = '--no-cache'
-    tmp = j2_env.get_template(docker_file).render(name=name, version=version)
+    tmpDocker = j2_env.get_template(docker_file).render(name=name, version=version)
+
+    bash_entry_point_file = 'bash_entrypoint.jinja'
+    tmpBashEntryPoint = j2_env.get_template(bash_entry_point_file).render(name=name, version=version)
 
     dirpath = tempfile.mkdtemp()
     copyfile(os.path.join('package_template', 'fetch_and_run.sh'), os.path.join(dirpath, 'fetch_and_run.sh'))
-    copyfile(os.path.join('package_template', 'bash_entrypoint.sh'), os.path.join(dirpath, 'bash_entrypoint.sh'))
+    # copyfile(os.path.join('package_template', 'bash_entrypoint.sh'), os.path.join(dirpath, 'bash_entrypoint.sh'))
     copyfile(os.path.join('package_template', 'update_hpc_runner.sh'), os.path.join(dirpath, 'update_hpc_runner.sh'))
     os.chdir(dirpath)
 
     f = open('{}/Dockerfile'.format(dirpath), 'w')
-    f.write(tmp)
+    f.write(tmpDocker)
+    f.close()
+
+    f = open('{}/bash_entrypoint.sh'.format(dirpath), 'w')
+    f.write(tmpBashEntryPoint)
     f.close()
 
     run_command('docker build --rm {} -t quay.io/nyuad_cgsb/{}:{} .'.format(cache, name, version), verbose=True)
