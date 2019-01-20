@@ -15,7 +15,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 aserver_api = get_server_api()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 import threading
@@ -61,8 +61,8 @@ def run_command(cmd, verbose=True):
         # - otherwise the stdout/stderr buffer gets filled and it all stops working
         output = p.stdout.read(readSize).decode("utf-8")
         if output and verbose:
-            ## I don't want to see these - I know they are there
-            ##TODO Add a config that allows for getting rid of strings
+            # I don't want to see these - I know they are there
+            # TODO Add a config that allows for getting rid of strings
             if 'file exists, but clobbering' not in output:
                 logger.warning(output)
             else:
@@ -97,7 +97,7 @@ def find_files(environments):
     if environments:
         return environments
     else:
-        return glob.glob("**/environment*.yml", recursive=True)
+        return glob.glob("recipes/**/environment*.yml", recursive=True)
 
 
 def get_name(fname):
@@ -118,13 +118,14 @@ def get_name(fname):
 
 def remote_env_exists(env):
 
-    logger.debug("Testing for package name {}".format(env.name))
+    logger.info("Testing for package name {}".format(env.name))
+    print("Testing for package name {}".format(env.name))
 
     try:
         aserver_api.release(os.environ.get("ANACONDA_USER"), '{}-{}'.format(env.name, env.version), env.version)
-        logger.debug("Remote env exists. Next!")
+        logger.info("Remote env exists. Next!")
     except:
-        logger.debug("Remote env does not exist! Don't skip!")
+        logger.info("Remote env does not exist! Don't skip!")
         return False
 
     return True
