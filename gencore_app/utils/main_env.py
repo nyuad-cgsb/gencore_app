@@ -75,7 +75,7 @@ class Environment(Environment):
 
     def to_yaml_conda_safe(self, stream=None):
         d = self.to_dict_conda_safe()
-        out = compat.u(yaml.dump(d, default_flow_style=False))
+        out = compat.u(yaml.dump(d))
         if stream is None:
             return out
         stream.write(compat.b(out, encoding="utf-8"))

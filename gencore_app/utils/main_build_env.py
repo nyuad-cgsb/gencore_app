@@ -1,24 +1,31 @@
-# gencore_app.utils.main_build_env
-
 import logging
 import sys
 import os
 from gencore_app.utils.main import run_command
-from gencore_app.utils.main_env import from_file
+from conda_env.env import from_file
+import tempfile
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+def conda_clean():
+    logger.info('Cleaning conda package cache')
+    run_command('conda clean --all -y')
+
+
 def try_conda_env_create(fname):
-
-    env = from_file(fname)
-    fname = env.save_conda_safe()
-
+    """
+    Create the conda env
+    We have this under a retry loop in case of http errors
+    :param fname:
+    :return:
+    """
     retries_max = 2
     retries_count = 0
     create_env = False
 
+    conda_clean()
     while retries_count <= retries_max:
         retries_count = retries_count + 1
         ec = run_conda_env_create(fname)
@@ -27,30 +34,33 @@ def try_conda_env_create(fname):
             create_env = True
             break
         else:
-            logging.warn(
+            logging.warning(
                 'Conda Env was NOT created successfully! Retrying {}'.format(retries_count))
+            sys.exit(1)
 
-    os.remove(fname)
-
+    conda_clean()
     return create_env
 
 
 def run_conda_env_create(fname):
+    """
+    TODO update this so it uses the -p and runs things in parallel
+    :param fname:
+    :return:
+    """
 
     logger.info("Testing environment build file {}".format(fname))
 
-    remove_envs = "rm -rf /anaconda/envs/*"
-    if run_command(remove_envs):
-        cmd = "conda env create --quiet --force --file {}".format(fname)
-        return run_command(cmd)
-    else:
-        return False
+    with tempfile.TemporaryDirectory() as tempdirname:
+        cmd = "conda env create --verbose -p {} --force --file {}".format(tempdirname, fname)
+        exit_code = run_command(cmd)
+
+    return exit_code
 
 
 def status_check_build(build_passes):
-
     if not build_passes:
-        logging.warn("One or more builds did not pass!")
+        logging.warning("One or more builds did not pass!")
         sys.exit(1)
     else:
         logging.info("Build passed!")

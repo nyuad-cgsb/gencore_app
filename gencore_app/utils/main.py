@@ -1,41 +1,76 @@
 import subprocess as sp
 import logging
 import glob
+import sys
 import os
 
 from binstar_client.utils import get_server_api
-from gencore_app.utils.main_env import from_file
+from conda_env.env import from_file
+
+from datetime import datetime
+import time
+import os
+
+from apscheduler.schedulers.background import BackgroundScheduler
 
 aserver_api = get_server_api()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+import threading
+
+
+def tick():
+    print('Tick! The time is: %s' % datetime.now())
+
+
+def scheduleit():
+    """
+    This is solely to force some output to the screen while conda is running
+    Otherwise the CI service starts freaking out and thinks its died
+    """
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(tick, 'interval', seconds=60)
+    scheduler.start()
+    return scheduler
+
 
 def run_command(cmd, verbose=True):
 
-    logger.warn("Running cmd {}".format(cmd))
-    readSize = 1024 * 8
+    logger.warning("Running cmd {}".format(cmd))
+    readSize = 1024 * 4
 
     try:
         p = sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.STDOUT,
                      stdin=sp.PIPE, close_fds=True, executable="/bin/bash")
     except OSError as err:
         print("OS Error: {0}".format(err))
+        raise err
+    except Exception as err:
+        print("OS Error: {0}".format(err))
+        raise()
 
     p.stdin.close()
 
     ec = p.poll()
+    scheduler = scheduleit()
 
     while ec is None:
         # need to read from time to time.
         # - otherwise the stdout/stderr buffer gets filled and it all stops working
         output = p.stdout.read(readSize).decode("utf-8")
-
         if output and verbose:
-            logger.info(output)
+            # I don't want to see these - I know they are there
+            # TODO Add a config that allows for getting rid of strings
+            if 'file exists, but clobbering' not in output:
+                logger.warning(output)
+            else:
+                logger.info(output)
 
         ec = p.poll()
+
+    scheduler.shutdown()
 
     # read remaining data (all of it)
     output = p.stdout.read(readSize).decode("utf-8")
@@ -51,6 +86,10 @@ def run_command(cmd, verbose=True):
         return False
 
 
+def find_environments(recipe_dir):
+    return glob.glob("{}/**/environment*.yml".format(recipe_dir), recursive=True)
+
+
 def find_files(environments):
 
     # By default we will check to see if there
@@ -62,23 +101,43 @@ def find_files(environments):
     if environments:
         return environments
     else:
-        return glob.glob("**/environment*.yml", recursive=True)
+        return glob.glob("recipes/**/environment*.yml", recursive=True)
 
 
 def get_name(fname):
     """
-    Until we get versions into conda env our modules are written as
-    gencore_metagenomics_1.0
+    Conda Env Name: gencore_metagenomics_1.0
     This corresponds to module gencore_metagenomics/1.0
-    This method will go away when there are versions!
-
     """
 
     package = from_file(fname)
     name = package.name
-    version = package.version
+    version = name.split('_').pop()
 
     return name, version
+
+
+def filter_environments(environments):
+    """
+    Filter environments for those that are not already uploaded to anaconda cloud
+    :param environments:
+    :return:
+    """
+    new_environments = []
+
+    if not len(environments) or not environments:
+        logger.warning('Did not find any environments to build.')
+        sys.exit(0)
+
+    for e in environments:
+        if not remote_env_exists(from_file(e)):
+            new_environments.append(e)
+
+    if not len(new_environments):
+        logger.info('No new environments.')
+        sys.exit(0)
+
+    return new_environments
 
 
 def remote_env_exists(env):
@@ -86,7 +145,7 @@ def remote_env_exists(env):
     logger.info("Testing for package name {}".format(env.name))
 
     try:
-        aserver_api.release(os.environ.get("ANACONDA_USER"), env.name, env.version)
+        aserver_api.package(os.environ.get("ANACONDA_USER"), '{}'.format(env.name))
         logger.info("Remote env exists. Next!")
     except:
         logger.info("Remote env does not exist! Don't skip!")
@@ -97,20 +156,12 @@ def remote_env_exists(env):
 
 def rebuild(filename):
     """
-    Return a boolean based on whether or not we are building the environment
-    1. If the environment does not exist - we always build it
-    2. If the remote environment exists
-        a. rebuild: True specified in yaml - rebuild
-        b. rebuld not specified in yaml - don't rebuild
+    TODO This will be a separate subcommand
     """
-    # TODO add in md5 sum check instead of if env exists
 
     env = from_file(filename)
 
     if not remote_env_exists(env):
         return True
-    # this is deprecated - now we increase the build string
-    # elif 'rebuild' in env.extra_args and env.extra_args['rebuild']:
-    #     return True
     else:
         return False

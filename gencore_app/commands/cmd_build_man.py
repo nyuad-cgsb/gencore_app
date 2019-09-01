@@ -114,6 +114,7 @@ def update_env(docs):
     deps = env.dependencies
     conda_deps = deps.get('conda')
 
+    ##Something has gone wrong with this
     if docs_dependencies not in conda_deps:
         env.dependencies.add(docs_package)
 
