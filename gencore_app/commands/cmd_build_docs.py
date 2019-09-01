@@ -1,19 +1,14 @@
-import click
-from gencore_app.cli import global_test_options
 from binstar_client.utils import get_server_api
 from gencore_app.utils.main import rebuild, find_files
 import logging
 from gencore_app.utils.main_env import Environment, from_file
 import os
 
-# logging.basicConfig(level=logger.info)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-@click.command('build_docs', short_help='Build docs')
-@global_test_options
-def cli(verbose, environments):
+def build_docs(**kwargs):
     """ Build markdown docs for GitBooks
         1. Check if remote env exists or force_rebuild enabled
             a. If env exists skip building docs for this packge
@@ -31,10 +26,8 @@ def cli(verbose, environments):
                 many matrices, describing which software is in which module
     """
 
-    click.echo("We are building the docs for GitHub Pages")
-
     docs = MeMyDocs()
-    docs.write_docs(environments)
+    docs.write_docs(kwargs['environments'])
 
 
 def flatten_deps(deps):
@@ -121,14 +114,8 @@ class MeMyDocs():
             for channel in channels:
                 try:
                     package = aserver_api.package(channel, dep)
-                    # logger.info(
-                    #     "Package {} exists in channel {}."
-                    # .format(dep, channel))
                 except:
                     package = None
-                    # logger.info(
-                    #     "Package {} does not exist in channel {}."
-                    # .format(dep, channel))
 
                 if package is not None:
                     dep_obj = DepPackage(dep, version, package[

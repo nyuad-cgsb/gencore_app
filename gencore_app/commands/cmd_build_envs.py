@@ -1,7 +1,5 @@
 #gencore_app.commands.cmd_build_envs
 
-import click
-from gencore_app.cli import global_test_options
 from gencore_app.utils.main import find_files, rebuild
 from gencore_app.utils.main_build_env import status_check_build, try_conda_env_create
 import logging
@@ -10,10 +8,8 @@ import os
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-@click.command('build_envs', short_help='Build environments')
-@global_test_options
 
-def cli(verbose, environments):
+def build(**kwargs):
     """
         1. Check remote env exists.
        2. Build the env.
@@ -26,7 +22,6 @@ def cli(verbose, environments):
     logger.warning('files are {}'.format(files))
 
     for filename in files:
-
         # TODO - Have better specifications for deciding which envs to build
         if rebuild(filename):
             logger.warning('Building {}'.format(filename))

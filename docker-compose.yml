@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  conda:
+    environment:
+      ANACONDA_USER: 'nyuad-cgsb'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: tail -f /dev/null
+    volumes:
+      - ./:/pkgs/gencore_app
+      - /var/run/docker.sock:/var/run/docker.sock
