@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e83150cd-67f0-4b24-9739-f41cb98c9147" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/markdown-exported-files.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_docker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_eb.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_eb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/commands/cmd_upload_envs.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/commands/cmd_upload_envs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/utils/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/utils/main_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gencore_app/utils/main_upload.py" beforeDir="false" afterPath="$PROJECT_DIR$/gencore_app/utils/main_upload.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/cli.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,11 +15,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gencore_app/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+            <state relative-caret-position="168">
+              <caret line="83" column="42" selection-start-line="83" selection-start-column="42" selection-end-line="83" selection-end-column="42" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
-                <marker date="1567495542932" expanded="true" signature="2375:2742" ph="..." />
+                <marker date="1567495825152" expanded="true" signature="2375:2742" ph="..." />
               </folding>
             </state>
           </provider>
@@ -64,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="44">
+              <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -153,7 +141,6 @@
         <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/docker-compose.yml" />
         <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_eb.py" />
-        <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" />
         <option value="$USER_HOME$/Library/Caches/PyCharm2019.1/remote_sources/-396983352/-171664769/binstar_client/commands/upload.py" />
         <option value="$PROJECT_DIR$/build/lib/gencore_app/utils/main_upload.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main_env.py" />
@@ -161,6 +148,7 @@
         <option value="$PROJECT_DIR$/gencore_app/utils/main_upload.py" />
         <option value="$PROJECT_DIR$/gencore_app/utils/main.py" />
         <option value="$PROJECT_DIR$/gencore_app/main.py" />
+        <option value="$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py" />
       </list>
     </option>
   </component>
@@ -278,16 +266,15 @@
       <workItem from="1563698382633" duration="5818000" />
       <workItem from="1563774366554" duration="10165000" />
       <workItem from="1567321093858" duration="1179000" />
-      <workItem from="1567324891881" duration="15339000" />
+      <workItem from="1567324891881" duration="15778000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35432000" />
+    <option name="totallyTimeSpent" value="35871000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1905" y="-59" width="1905" height="1015" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.23725174" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -527,13 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gencore_app/utils/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5323">
@@ -544,13 +524,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gencore_app/commands/cmd_build_envs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gencore_app/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+        <state relative-caret-position="168">
+          <caret line="83" column="42" selection-start-line="83" selection-start-column="42" selection-end-line="83" selection-end-column="42" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <marker date="1567495542932" expanded="true" signature="2375:2742" ph="..." />
+            <marker date="1567495825152" expanded="true" signature="2375:2742" ph="..." />
           </folding>
         </state>
       </provider>

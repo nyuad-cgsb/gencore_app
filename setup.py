@@ -6,7 +6,6 @@ setup(
     packages=['gencore_app', 'gencore_app.commands', 'gencore_app.utils'],
     include_package_data=True,
     install_requires=[
-        'click',
         'apscheduler',
     ],
     entry_points='''
