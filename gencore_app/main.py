@@ -1,32 +1,24 @@
 import argparse
-import sys
 from pprint import pprint
-from gencore_app.utils.main import find_environments, remote_env_exists, filter_environments
-from gencore_app.utils.main_build_env import try_conda_env_create
-from conda_env.env import from_file
+from gencore_app.commands import cmd_build_envs, cmd_build_eb, cmd_upload_envs
+from utils.main import find_environments, filter_environments
+import logging
+import sys
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
-def build_sanity_checks(**kwargs):
-    print('Build sanity checks...')
-    if not kwargs['environments'] and not kwargs['recipe_dir']:
-        kwargs['recipe_dir'] = 'recipes'
-
-    if kwargs['environments'] and kwargs['recipe_dir']:
-        raise Exception('You specified both environments and a recipe dir. Only environments will be considered')
+def upload(**kwargs):
+    cmd_upload_envs.upload(**kwargs)
 
 
 def build(**kwargs):
-    build_sanity_checks(**kwargs)
-    if kwargs['environments']:
-        print(kwargs['environments'])
-    elif kwargs['recipe_dir']:
-        kwargs['environments'] = find_environments(kwargs['recipe_dir'])
+    cmd_build_envs.build(**kwargs)
 
-    kwargs['environments'] = filter_environments(kwargs['environments'])
 
-    for e in kwargs['environments']:
-        exit = try_conda_env_create(e)
-        print('Exited as : {}'.format(exit))
+def build_eb(**kwargs):
+    cmd_build_eb.build_eb(**kwargs)
 
 
 def add_args(p):
@@ -36,18 +28,60 @@ def add_args(p):
     return p
 
 
-parser = argparse.ArgumentParser()
+def add_envs_to_args(**kwargs):
+    print('Filtering recipes')
+    if kwargs['recipe_dir']:
+        print('Finding environment definitions')
+        kwargs['environments'] = find_environments(kwargs['recipe_dir'])
+        print('Done finding environment definitions')
 
-subparsers = parser.add_subparsers(title='subcommands',
-                                   dest='subparser',
-                                   description='valid subcommands',
-                                   help='Choose a valid subcommand')
+    print('Filtering environments')
+    try:
+        kwargs['environments'] = filter_environments(kwargs['environments'])
+    except Exception as e:
+        print(e)
+        sys.exit(1)
 
-build_parser = subparsers.add_parser('build')
-build_parser = add_args(build_parser)
-args = parser.parse_args()
-kwargs = vars(parser.parse_args())
-if kwargs['subparser'] is not None:
-    globals()[kwargs.pop('subparser')](**kwargs)
-else:
-    parser.parse_args(['-h'])
+    print('Found {} recipes'.format(len(kwargs['environments'])))
+    return kwargs
+
+
+def args_sanity_checks(**kwargs):
+    print('Build sanity checks...')
+    if not kwargs['environments'] and not kwargs['recipe_dir']:
+        kwargs['recipe_dir'] = 'recipes'
+
+    if kwargs['environments'] and kwargs['recipe_dir']:
+        raise Exception('You specified both environments and a recipe dir. Only environments will be considered')
+
+    print('Args pass sanity checks...')
+    return kwargs
+
+
+def build_parsers():
+    parser = argparse.ArgumentParser()
+
+    subparsers = parser.add_subparsers(title='subcommands',
+                                       dest='subparser',
+                                       description='valid subcommands',
+                                       help='Choose a valid subcommand')
+
+    # build_parser = subparsers.add_parser('build')
+    # build_eb_parser = subparsers.add_parser('build_eb')
+    add_args(subparsers.add_parser('build'))
+    add_args(subparsers.add_parser('build_eb'))
+    add_args(subparsers.add_parser('upload'))
+    return parser
+
+
+if __name__ == "__main__":
+    parser = build_parsers()
+    kwargs = vars(parser.parse_args())
+    if kwargs['subparser'] is not None:
+        subparser = kwargs.pop('subparser')
+        kwargs = args_sanity_checks(**kwargs)
+        # So far all of these subcommands use the same argument parsing
+        kwargs = add_envs_to_args(**kwargs)
+        globals()[subparser](**kwargs)
+    else:
+        parser.parse_args(['-h'])

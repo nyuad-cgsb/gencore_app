@@ -6,9 +6,18 @@ import logging
 import os
 import time
 import tempfile
+import random
+import string
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+
+def get_version_from_filename(fname):
+    e = fname.split('-')
+    e[1] = e[1].replace('.yml', '')
+    e[1] = e[1].replace('.yaml', '')
+    return e[1]
 
 
 def from_yaml(yamlstr, **kwargs):
@@ -45,7 +54,8 @@ class Environment(Environment):
         if self._version is not None:
             return "{}".format(self._version)
         else:
-            return time.strftime('%Y.%m.%d.%H%M')
+            return get_version_from_filename(self.filename)
+            # return time.strftime('%Y.%m.%d.%H%M')
 
     # We are adding this in here to make sure we get a conda happy object
     # This is actually the original to_dict method - but I don't like it
@@ -73,6 +83,7 @@ class Environment(Environment):
             d['extra_args'] = self.extra_args
         return d
 
+    # These can be deprecated - if you put extra fields in your yaml conda will complain but no longer throws errors
     def to_yaml_conda_safe(self, stream=None):
         d = self.to_dict_conda_safe()
         out = compat.u(yaml.dump(d))
@@ -84,5 +95,5 @@ class Environment(Environment):
         fileTemp = tempfile.NamedTemporaryFile(suffix='.yml', delete=False)
         with open(fileTemp.name, "wb") as fp:
             self.to_yaml_conda_safe(stream=fp)
-
         return fileTemp.name
+

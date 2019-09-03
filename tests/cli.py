@@ -2,7 +2,6 @@ import os
 import unittest
 import subprocess
 
-
 environment_1 = '''
 name: env_1
 version: 1
@@ -65,14 +64,6 @@ class IntegrationTest(unittest.TestCase):
         e = main_env.from_file('environment.yml')
         self.assertEqual(e.version, '1-0')
         self.assertEqual(e.name, 'env_1')
-
-    def test_labels(self):
-        create_env(environment_1)
-        from gencore_app.utils import main_env
-        from gencore_app.utils.main_upload import gen_labels
-        e = main_env.from_file('environment.yml')
-        labels = gen_labels(e)
-        self.assertEqual(labels, ['main', 'perl', 'perl=latest'])
 
     def tearDown(self):
         run('rm -f environment.yml')

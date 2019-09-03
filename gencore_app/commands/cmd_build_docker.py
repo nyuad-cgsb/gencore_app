@@ -14,6 +14,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+###################################################################
+# WIP
+###################################################################
+
 @click.command('build_docker', short_help='Build Docker Images')
 @global_test_options
 def cli(verbose, environments):
