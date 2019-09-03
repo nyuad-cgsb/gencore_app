@@ -15,12 +15,10 @@ def upload(**kwargs):
 
     logger.info("environments are {}".format(kwargs['environments']))
 
-
     for filename in kwargs['environments']:
-
         if rebuild(filename):
             logger.info("We are uploading env {}".format(filename))
             upload_passes = upload_remote_env(filename)
-            # status_check_upload(upload_passes)
+            status_check_upload(upload_passes)
         else:
             logger.info("env exists we are skipping")

@@ -9,5 +9,6 @@ services:
       dockerfile: Dockerfile
     command: tail -f /dev/null
     volumes:
+      - /Users/jillian/Dropbox/projects/infrastructure/nyuad-hpc-module-configs:/configs
       - ./:/pkgs/gencore_app
       - /var/run/docker.sock:/var/run/docker.sock

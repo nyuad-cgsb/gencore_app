@@ -37,7 +37,6 @@ def scheduleit():
 
 
 def run_command(cmd, verbose=True):
-
     logger.warning("Running cmd {}".format(cmd))
     readSize = 1024 * 4
 
@@ -49,7 +48,7 @@ def run_command(cmd, verbose=True):
         raise err
     except Exception as err:
         print("OS Error: {0}".format(err))
-        raise()
+        raise ()
 
     p.stdin.close()
 
@@ -91,7 +90,6 @@ def find_environments(recipe_dir):
 
 
 def find_files(environments):
-
     # By default we will check to see if there
     # any recipes committed
     recipes = os.environ.get('RECIPES')
@@ -125,23 +123,23 @@ def filter_environments(environments):
     """
     new_environments = []
 
-    if not len(environments) or not environments:
-        logger.warning('Did not find any environments to build.')
+    if not environments or not len(environments):
+        print('Did not find any environments to build.')
         sys.exit(0)
 
     for e in environments:
+        print('Checking environment file {}'.format(e))
         if not remote_env_exists(from_file(e)):
             new_environments.append(e)
 
     if not len(new_environments):
-        logger.info('No new environments.')
+        print('No new environments found. Exiting!')
         sys.exit(0)
 
     return new_environments
 
 
 def remote_env_exists(env):
-
     logger.info("Testing for package name {}".format(env.name))
 
     try:
@@ -165,3 +163,13 @@ def rebuild(filename):
         return True
     else:
         return False
+
+
+def get_environments(**kwargs):
+    if kwargs['environments']:
+        print(kwargs['environments'])
+    elif kwargs['recipe_dir']:
+        kwargs['environments'] = find_environments(kwargs['recipe_dir'])
+
+    kwargs['environments'] = filter_environments(kwargs['environments'])
+    return kwargs
