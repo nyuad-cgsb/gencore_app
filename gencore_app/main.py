@@ -4,6 +4,7 @@ from gencore_app.commands import cmd_build_envs, cmd_build_eb, cmd_upload_envs
 from utils.main import find_environments, filter_environments
 import logging
 import sys
+from binstar_client.commands import show
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
